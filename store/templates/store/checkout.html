@@ -1,0 +1,259 @@
+{% extends 'store/main.html' %} {% load static %} {% block content %}
+
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'store' %}">Home</a></li>
+                <li class="active">Check out</li>
+            </ol>
+        </div>
+        <!--/breadcrums-->
+
+        <div id="reg-req" class="register-req">
+            <p>Please <a href="#">Sign up</a> or <a href="#">Login</a> to checkout easily. You can also checkout as Guest by giving required informations.</p>
+        </div>
+        <!--/register-req-->
+
+        <div class="shopper-informations">
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="col-sm-7" style="padding-left: 0px;">
+                        <div class="total_area" style="margin-top: 38px;">
+
+
+                            <ul style="padding-left: 0px;">
+
+                                <li>Total Items <span>{{order.get_cart_items}}</span></li>
+                                <li>Price <span>£{{order.get_cart_total}}</span></li>
+                                <li>Discount <span>£0</span></li>
+                                <li>Total <span>£61</span></li>
+                                <br>
+
+                            </ul>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-5" style="padding-left: 0px;">
+                        <div class="shopper-info">
+                            <p>Apply Coupon</p>
+                            <form>
+                                <input required class="form-control" type="text" placeholder="Coupon Code">
+                            </form>
+                            <button class="btn btn-primary" style="margin-top: 0;">Apply Coupon</button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="bill-to">
+                        <p>Shipping Information</p>
+
+                        <form onload="assignHandler()" id="shipping-form">
+                            {% csrf_token %}
+                            <div id="user-info">
+                                <div class="col-sm-6" style="padding-left: 0px;">
+                                    <input required class="form-control" type="text" name="name" value="{{customer.name}}" placeholder="Name">
+                                    <input required class="form-control" type="email" name="email" value="{{customer.email}}" placeholder="Email*">
+                                    <input required class="form-control" type="text" name="phone" placeholder="Phone">
+                                </div>
+                            </div>
+
+
+                            <div id="shipping-info">
+
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input required class="form-control" type="text" name="address" placeholder="Address*">
+                                    <input required class="form-control" type="text" name="post_code" placeholder="Postal Code*">
+                                    <input required class="form-control" type="text" name="country" placeholder="Country">
+                                    <!-- <select name="country_value" id="selectCountry" required>
+                                    <option value="UK">UK</option>
+                                    <option value="US">United States</option>
+                                    <option value="Canada">Canada</option>
+                                </select> -->
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-sm-12 text-terms" style="padding-left: 0px; padding-right: 0px">
+                                <h5>By clicking <strong>Confirm Order</strong>, you agree to our <a href="# ">Terms & Conditions</a>, Data Policy and Cookie Policy. You may receive email notifications from us and can opt out at any time.</h5>
+                            </div>
+
+
+
+                            <a class="btn btn-primary" href="{% url 'cart' %}">Back to Cart</a>
+                            <button id="confirm-btn-js" class="btn btn-primary" type="submit" value="continue">Confirm Order</button>
+
+                            <button onclick="confirmOrder()" class="btn btn-primary">Confirm Order</button>
+
+                        </form>
+
+                        <!-- <div class="shopper-info form-one ">
+
+                            <p>Apply Coupon</p>
+                            <form>
+                                <input type="text " placeholder="Coupon Code ">
+
+                            </form>
+                            <a class="btn btn-primary " href=" ">Apply Coupon</a>
+
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="review-payment">
+            <h2>Review & Payment</h2>
+        </div>
+
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                    <tr class="cart_menu">
+                        <td class="image">Item</td>
+                        <td class="description"></td>
+                        <td class="price">Price</td>
+                        <td class="quantity">Quantity</td>
+                        <td class="total">Total</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="cart_product">
+                            <a href=""><img src="{{item.product.imageURL}}" alt=""></a>
+                        </td>
+                        <td class="cart_description">
+                            <h4><a href="">{{item.product.name}}</a></h4>
+                            <p>Product ID: {{item.product.id}}</p>
+                        </td>
+                        <td class="cart_price">
+                            <p>£{{item.product.price}}</p>
+                        </td>
+                        <td class="cart_price">
+                            <p style="padding-left: 22px;">{{item.quantity}}</p>
+                        </td>
+
+                        <td class="cart_total">
+                            <p class="cart_total_price">£{{item.get_total}}</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+<!--/#cart_items-->
+
+
+<script>
+    var total, form, country;
+
+    total = '{{order.get_cart_total}}';
+
+    user = '{{request.user}}';
+
+    form = document.getElementById('shipping-form');
+    csrftoken = form.getElementsByTagName("input")[0].value;
+    console.log('Newtoken:', form.getElementsByTagName("input")[0].value);
+
+
+    if (user != 'AnonymousUser') {
+        var hide = document.getElementById('reg-req');
+        hide.style.display = 'none';
+    }
+
+    console.log("Going to confirmOrder");
+
+    // document.getElementById('confirm-btn-js').addEventListener('click', function(e) {
+    //     console.log("Inside confirmOrder");
+    //     confirmOrder();
+    // });
+
+    function assignHandler() {
+
+        document.getElementById('confirm-btn-js').addEventListener('click', function(e) {
+
+            e.preventDefault();
+            console.log("Inside confirmOrder");
+            confirmOrder();
+        });
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitFormData();
+
+    })
+
+    function submitFormData() {
+
+        var userFormData = {
+            'name': null,
+            'email': null,
+            'phone': null,
+            'total': total,
+
+        };
+
+        var shippingInfo = {
+            'address': null,
+            'post_code': null,
+            'country': null,
+
+        };
+
+        // country = document.getElementById("selectCountry").value;
+
+        userFormData.name = form.name.value;
+        userFormData.email = form.email.value;
+        userFormData.phone = form.phone.value;
+
+
+        shippingInfo.address = form.address.value;
+        shippingInfo.post_code = form.post_code.value;
+        shippingInfo.country = form.country.value;
+
+
+        console.log(userFormData);
+        console.log(shippingInfo);
+
+
+        var url = "/process_order/"
+        fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'applicaiton/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({
+                    'form': userFormData,
+                    'shipping': shippingInfo
+                }),
+
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data);
+                alert('Transaction completed');
+
+                cart = {}
+                document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
+                window.location.href = "{% url 'store' %}"
+
+            })
+    }
+</script>
+
+{% endblock content %}

@@ -1,0 +1,300 @@
+{% extends 'store/main.html' %} {% load static %} {% block content %}
+
+<section id="slider">
+    <div class="container">
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item customize-cover-image active">
+                    <img class="apply-opacity" src="{% static 'images/home/coverphoto/01.jpg' %}" alt="ngpeptides_cover_01">
+
+                </div>
+
+                <div class="item customize-cover-image">
+                    <img class="apply-opacity" src="{% static 'images/home/coverphoto/02.jpg' %}" alt="ngpeptides_cover_02">
+
+                </div>
+
+                <div class="item customize-cover-image">
+                    <img class="apply-opacity" src="{% static 'images/home/coverphoto/03.jpg' %}" alt="ngpeptides_cover_03">
+
+                </div>
+
+                <div class="item customize-cover-image">
+                    <img class="apply-opacity" src="{% static 'images/home/coverphoto/04.jpg' %}" alt="ngpeptides_cover_04">
+
+                </div>
+
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+    </div>
+</section>
+<!--/slider-->
+
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 border-blue">
+                <div class="left-sidebar">
+
+
+                    <!-- Offer Section -->
+
+                    <!-- <h2>Offer Section</h2>
+                    <p>Free Delivery to UK only for today.<br> Hurry UP!!</p>
+                    <div class="shipping text-center ">
+
+                        <img src="images/home/shipping.jpg " alt=" " />
+                    </div>
+
+
+                    <br><br> -->
+                    <!-- Offer section ends -->
+
+
+                    <h2>Purchase</h2>
+                    <div class="panel-group category-products" id="accordian">
+
+                        {% for product in products %}
+                        <!--category-products-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">{{ product.name }}</a></h4>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+                    <!--/category-products-->
+
+
+
+                </div>
+            </div>
+
+            <div class="col-sm-9" style="margin-bottom: 35px;">
+
+                <div class="category-tab bg-offblue">
+                    <!--category-tab-->
+                    <div class="col-sm-12">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#all" data-toggle="tab">All Products</a></li>
+                            <li><a href="#best" data-toggle="tab">Best Seller</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="all">
+
+                            {% for product in products %}
+
+                            <a href="#">
+                                <div class="col-sm-3">
+                                    <div class="product-image-wrapper">
+                                        <div class="single-products">
+                                            <div class="productinfo text-center">
+                                                <img src="{{product.imageURL}}" alt="" />
+                                                <h2>£{{product.price}}</h2>
+                                                <p>{{product.name}}</p>
+                                                <button data-product="{{product.id}}" data-action="add" class="btn btn-default add-to-cart update-cart-js"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="tab-pane fade" id="best">
+
+                            {% for product in products %} {% if product.bestSellItem %}
+
+                            <a href="#">
+                                <div class="col-sm-3">
+
+                                    <div class="product-image-wrapper">
+                                        <div class="single-products">
+                                            <div class="productinfo text-center">
+                                                <img src="{% static 'images/home/demo1.jpg' %}" alt=" " />
+                                                <h2>£{{product.price}}</h2>
+                                                <p>{{product.name}}</p>
+                                                <button data-product="{{product.id}}" data-action="add" class="btn btn-default add-to-cart update-cart-js"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+
+                            {% endif %} {% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+                <!--/category-tab-->
+
+                <div class="recommended_items">
+                    <!--recommended_items-->
+                    <h2 class="title text-center">recommended items</h2>
+
+                    <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="item active">
+
+                                {% for product in products %}
+
+                                <!-- <a href="#"> -->
+                                <div class="col-sm-3">
+                                    <div class="product-image-wrapper">
+                                        <div class="single-products">
+                                            <div class="productinfo text-center">
+                                                <img src="{{product.imageURL}}" alt="" />
+                                                <h2>£{{product.price}}</h2>
+                                                <p>{{product.name}}</p>
+                                                <button data-product="{{product.id}}" data-action="add" class="btn btn-default add-to-cart update-cart-js"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </a> -->
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="item">
+                                <a href="product-details.html">
+                                    <div class="col-sm-4">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <img src="{% static 'images/home/demo1.jpg' %}" alt="" />
+                                                    <h2>£56</h2>
+                                                    <p>Product Name</p>
+                                                    <button class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="product-details.html">
+                                    <div class="col-sm-4">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <img src="{% static 'images/home/demo1.jpg' %}" alt="" />
+                                                    <h2>£56</h2>
+                                                    <p>Product Name</p>
+                                                    <button class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="product-details.html">
+                                    <div class="col-sm-4">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <img src="{% static 'images/home/demo1.jpg' %}" alt="" />
+                                                    <h2>£56</h2>
+                                                    <p>Product Name</p>
+                                                    <button class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                            </div>
+                        </div>
+                        <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!--/recommended_items-->
+
+
+                <div class="col-sm-12 bg-offblue custom-padding ">
+                    <div class="item ">
+                        <h1 style="margin-top: 60px; "><span>NextGen</span> Peptides</h1>
+                        <br>
+                        <h2>What are Peptides?</h2>
+
+                        <p>Peptides consist of two amino acids linked together by their amino and carboxyl groups; eliminating a water molecule in the process and forming a peptide bond. Informally, they are tiny proteins, however, a protein would technically
+                            need many more amino acids. By definition, any amino acid chain longer than 50 would constitute as a protein.
+                        </p>
+
+                    </div>
+
+                    <br>
+
+                    <div class="item ">
+                        <h2>How are peptides used?</h2>
+
+                        <p>Peptides have been commonly used to: burn fat, build muscle, increase levels of HGH and generally improve athletic performance. However, all peptides sold at Peptides UK are strictly for research purposes and so are not for human
+                            consumption.
+                        </p>
+
+                    </div>
+
+                    <br>
+
+                    <div class="item ">
+                        <h2>Why us?</h2>
+
+                        <p>We are the highest quality peptides supplier in the UK with quick delivery. Easily order peptides and peptides will be delivered as stated. We offer the best service in UK.
+                        </p>
+
+                        <a href="# " type="button " class="btn btn-default get ">Learn more</a>
+                    </div>
+
+                    <br><br><br><br>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock content %}

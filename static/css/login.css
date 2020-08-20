@@ -1,0 +1,27 @@
+#login_form {
+    display: block;
+    margin-bottom: 100px;
+    margin-top: 60px;
+    overflow: hidden;
+}
+
+/* Checkout Page */
+
+.bill-to>form>div>div>input {
+    background: #F0F0E9;
+    border: 0 none;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    font-weight: 300;
+}
+
+.text-terms {
+    margin-top: 5px;
+    padding-left: 0px;
+}
+
+.text-terms h5 {
+    text-align: justify;
+    line-height: 22px;
+}

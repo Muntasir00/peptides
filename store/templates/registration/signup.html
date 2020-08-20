@@ -1,0 +1,32 @@
+{% extends 'store/main.html' %} {% load static %} {% block content %}
+
+<section id="login_form">
+    <!--form-->
+    <div class="container">
+        <div class="row">
+
+
+
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="signup-form">
+                    <!--sign up form-->
+                    <h2>New User Signup!</h2>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <input type="submit" name="Create User">
+                    </form>
+                </div>
+                <!--/sign up form-->
+            </div>
+
+
+
+
+        </div>
+    </div>
+</section>
+<!--/form-->
+
+
+{% endblock content %}
